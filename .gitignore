@@ -1,6 +1,4 @@
-*
-!README.txt
-!release.sh
-!*.py
-!.gitignore
+*.pyc
+*.egg-info
+dist
 
