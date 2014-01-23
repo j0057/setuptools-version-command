@@ -18,6 +18,6 @@ setup(
     packages=['setuptools_version_command'],
     entry_points={
         'distutils.setup_keywords': [
-            'version_command = setuptools_metadata:execute_version_command'
+            'version_command = setuptools_version_command:execute_version_command'
         ]
     })
