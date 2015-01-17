@@ -26,9 +26,6 @@ def get_scm_version(filename, command, pep440 = None):
     except:
         scm_version = None
 
-    # apply pep440 if requested
-    scm_version = apply_pep440(pep440, scm_version)
-
     # also get version from distname.egg-info/version.txt
     try:
         with open(filename, 'r') as f:
@@ -42,7 +39,6 @@ def get_scm_version(filename, command, pep440 = None):
 
     # if the cached version is wrong
     if scm_version and (scm_version != cached_version):
-
         # create directory if necessary
         dirname = os.path.dirname(filename)
         if not os.path.isdir(dirname):
@@ -51,11 +47,11 @@ def get_scm_version(filename, command, pep440 = None):
         # rewrite cached version
         with open(filename, 'w') as f:
             f.write(scm_version)
-        return scm_version
+        return apply_pep440(pep440, scm_version)
 
     # there is only the cached version or it doesn't matter
     else:
-        return cached_version
+        return apply_pep440(pep440, cached_version)
 
 def apply_pep440(mode, version):
     if mode in ['git', 'git-local']:
