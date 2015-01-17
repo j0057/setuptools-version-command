@@ -7,20 +7,27 @@ import distutils.core
 
 # setup(
 #   version_command='git describe',
+#   version_command_pep440='git'
 #   ...)
 
 def execute_version_command(dist, attr, value):
     filename = dist.metadata.name + '.egg-info/version.txt'
-    version = get_scm_version(filename, value)
+    version = get_scm_version(filename, value, pep440=dist.metadata.version_pep440)
     dist.metadata.version = version
 
-def get_scm_version(filename, command):
+def set_pep440(dist, attr, value):
+    dist.metadata.version_pep440 = value
+    
+def get_scm_version(filename, command, pep440 = None):
     # get version 
     try:
         cmd = command.split()
         scm_version = subprocess.check_output(cmd).strip()
     except:
         scm_version = None
+
+    # apply pep440 if requested
+    scm_version = apply_pep440(pep440, scm_version)
 
     # also get version from distname.egg-info/version.txt
     try:
@@ -50,7 +57,17 @@ def get_scm_version(filename, command):
     else:
         return cached_version
 
-# deprecated :-)
-def get_git_version(filename):
-    return get_scm_version(filename, 'git describe')
+def apply_pep440(mode, version):
+    if mode in ['git', 'git-local']:
+        return version.replace('-', '+git-', 1).replace('-', '.')
 
+    elif mode == 'git-dev':
+        parts = version.split('-')
+        parts[-2] = 'dev' + parts[-2]
+        return '.'.join(parts[:-1])
+
+    elif mode == None:
+        return version
+
+    else:
+        raise Exception('Unrecognized mode {0!r}'.format(mode))
