@@ -22,8 +22,25 @@ or the output of the version_command, it will update the version key that is
 normally used for the version, such as what's used in the sdist filename and
 so on.
 
+SETUP KEYWORDS
+
+version_command: the command to execute to obtain a version.
+    example: 'git describe'
+
+version_command_pep440: whether to make output compliant with PEP 440
+    (instead of the other way around...)
+    valid values:
+        'git' or 
+        'git-local' : transform '1.2-3-abc1234' to '1.2+git-3-abc1234'
+        'git-dev'   : transform '1.2-3-abc1234' to '1.2.dev3'
+    default is None, which means do nothing.
+
+INSTALLATION
+
 To use it, just do this:
 
     pip install setuptools-version-command
 
 With the pip of the global python.
+
+
