@@ -2,12 +2,16 @@ setuptools-version-command -- get version from VCS
 
 Instead of hardcoding the version in setup.py like this:
 
+.. code-block:: python
+
     setup(
         name='some-dist-name',
         version='1.0',
         ...)
 
 This package allows specifying a VCS command like this:
+
+.. code-block:: python
 
     setup(
         name='some-dist-name',
@@ -42,5 +46,4 @@ To use it, just do this:
     pip install setuptools-version-command
 
 With the pip of the global python.
-
 
