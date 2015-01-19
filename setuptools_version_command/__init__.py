@@ -94,9 +94,12 @@ def _apply_pep440(version, mode):
         return version.replace('-', '+git-', 1).replace('-', '.')
 
     elif mode in ['pep440-git', 'pep440-git-dev']:
-        parts = version.split('-')
-        parts[-2] = 'dev' + parts[-2]
-        return '.'.join(parts[:-1])
+        if '-' in version:
+            parts = version.split('-')
+            parts[-2] = 'dev' + parts[-2]
+            return '.'.join(parts[:-1])
+        else:
+            return version
 
     elif mode == None:
         return version
