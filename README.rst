@@ -52,7 +52,7 @@ adapt the version string to PEP440 and must one have one of the following values
 installation
 ------------
 
-To use it, just do this:
+To use it, just do this::
 
     pip install setuptools-version-command
 
