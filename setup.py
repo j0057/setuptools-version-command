@@ -12,13 +12,12 @@ setup(
     author_email='j.j.molenaar@gmail.com',
     url='https://github.com/j0057/setuptools-version-command',
     name='setuptools-version-command',
-    version='1.2',
+    version='1.3',
     description=description,
     long_description=long_description,
     packages=['setuptools_version_command'],
     entry_points={
         'distutils.setup_keywords': [
-            'version_command_pep440 = setuptools_version_command:set_pep440',
             'version_command = setuptools_version_command:execute_version_command'
         ]
     })
