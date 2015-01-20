@@ -14,8 +14,10 @@ import distutils.core
 # save into distname.egg-info/version.txt and distname.egg-info/version_full.txt
 
 def execute_version_command(dist, attr, value):
-    version_txt      = dist.metadata.name + '.egg-info/version.txt'
-    version_full_txt = dist.metadata.name + '.egg-info/version_full.txt'
+    egg_info_dir = dist.metadata.name.replace('-', '_') + '.egg-info'
+
+    version_txt      = egg_info_dir + '/version.txt'
+    version_full_txt = egg_info_dir + '/version_full.txt'
 
     (command, pep440_mode) = _parse_value(value)
 
@@ -26,7 +28,7 @@ def execute_version_command(dist, attr, value):
         raise Exception('Could not find version from {0!r} or from {1}'.format(command, version_full_txt))
 
     if current_full_version and ((current_full_version != cached_full_version) or (current_short_version != cached_short_version)):
-        _create_egginfo_dir(dist.metadata.name + '.egg-info')
+        _create_egginfo_dir(egg_info_dir)
         _write_version(version_txt, current_short_version)
         _write_version(version_full_txt, current_full_version)
 
