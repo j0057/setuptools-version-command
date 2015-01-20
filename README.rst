@@ -72,6 +72,6 @@ Within a checkout of this repo:
 
     virtualenv env
     env/bin/pip install --editable .
-    ./setup.py --version
+    env/bin/python setup.py --version
 
 Make sure that you change the setup.py so that it actually makes use of setuptools-version-command.
