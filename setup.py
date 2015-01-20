@@ -12,7 +12,7 @@ setup(
     author='Joost Molenaar',
     author_email='j.j.molenaar@gmail.com',
     url='https://github.com/j0057/setuptools-version-command',
-    version='1.3.1',
+    version='1.3.2',
     #version_command=('git describe', 'pep440-git-dev'),
     description=description,
     long_description=long_description,
