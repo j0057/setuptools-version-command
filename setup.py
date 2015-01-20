@@ -16,7 +16,7 @@ setup(
     #version_command=('git describe', 'pep440-git-dev'),
     description=description,
     long_description=long_description,
-    packages=['setuptools_version_command'],
+    py_modules=['setuptools_version_command'],
     entry_points={
         'distutils.setup_keywords': [
             'version_command = setuptools_version_command:execute_version_command'
