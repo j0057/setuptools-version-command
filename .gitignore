@@ -1,4 +1,5 @@
-*.swp
-*.egg-info
 *.pyc
+*.egg-info
 MANIFEST
+dist
+env

@@ -1,9 +1,6 @@
 import os
 import os.path
 import subprocess
-import sys
-
-import distutils.core
 
 # version_command=('git describe', 'pep440-git-dev')
 # version_command=('git describe', 'pep440-git-local')
@@ -11,9 +8,7 @@ import distutils.core
 # version_command=('git describe', None)
 # version_command='git describe'
 
-# save into distname.egg-info/version.txt and distname.egg-info/version_full.txt
-
-def execute_version_command(dist, attr, value):
+def validate_version_command_keyword(dist, attr, value):
     egg_info_dir = dist.metadata.name.replace('-', '_') + '.egg-info'
 
     version_txt      = egg_info_dir + '/version.txt'
@@ -27,16 +22,15 @@ def execute_version_command(dist, attr, value):
     if not (current_full_version or cached_full_version):
         raise Exception('Could not find version from {0!r} or from {1}'.format(command, version_full_txt))
 
-    if current_full_version and ((current_full_version != cached_full_version) or (current_short_version != cached_short_version)):
-        _create_egginfo_dir(egg_info_dir)
-        _write_version(version_txt, current_short_version)
-        _write_version(version_full_txt, current_full_version)
+    dist.metadata.version = current_short_version
+    dist.metadata.version_full = current_full_version
 
-        dist.metadata.version = current_short_version
-        dist.metadata.version_full = current_full_version
-    else:
-        dist.metadata.version = cached_short_version
-        dist.metadata.version_full = cached_full_version
+def write_metadata_value(command, basename, filename):
+    attr_name = os.path.splitext(basename)[0]
+    attr_value = getattr(command.distribution.metadata, attr_name) \
+                 if hasattr(command.distribution.metadata, attr_name) \
+                 else None
+    command.write_or_delete_file(attr_name, filename, attr_value, force=True)
 
 def _parse_value(value):
     if isinstance(value, str):
@@ -76,20 +70,12 @@ def _get_scm_version(command, pep440_mode):
 def _get_cached_version(version_txt, version_full_txt):
     return (_read_version(version_txt), _read_version(version_full_txt))
 
-def _create_egginfo_dir(dirname):
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-
 def _read_version(filename):
     try:
         with open(filename, 'r') as f:
             return f.read()
     except:
         return None
-
-def _write_version(filename, version):
-    with open(filename, 'w') as f:
-        f.write(version)
 
 def _apply_pep440(version, mode):
     if mode in ['pep440-git-local']:
