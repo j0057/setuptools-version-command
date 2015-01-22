@@ -22,8 +22,8 @@ def validate_version_command_keyword(dist, attr, value):
     if not (current_full_version or cached_full_version):
         raise Exception('Could not find version from {0!r} or from {1}'.format(command, version_full_txt))
 
-    dist.metadata.version = current_short_version
-    dist.metadata.version_full = current_full_version
+    dist.metadata.version = current_short_version or cached_short_version
+    dist.metadata.version_full = current_full_version or cached_full_version
 
 def write_metadata_value(command, basename, filename):
     attr_name = os.path.splitext(basename)[0]
