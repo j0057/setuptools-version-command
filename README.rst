@@ -47,7 +47,7 @@ adapt the version string to PEP440 and must one have one of the following values
 ``pep440-git-local``
     Change ``"1.2.3-10-abc1234"``  to ``"1.2.3+git-10-abc1234"``
 ``pep440-git-dev`` or ``pep440-git``
-    Change ``"1.2.3-10-abc1234"`` to ``"1.2.3dev10"``
+    Change ``"1.2.3-10-abc1234"`` to ``"1.2.3.dev10"``
 
 installation
 ------------
