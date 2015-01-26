@@ -12,7 +12,7 @@ setup(
     author='Joost Molenaar',
     author_email='j.j.molenaar@gmail.com',
     url='https://github.com/j0057/setuptools-version-command',
-    version='1.3.5',
+    version='1.3.6',
     description=description,
     long_description=long_description,
     py_modules=['setuptools_version_command'],
