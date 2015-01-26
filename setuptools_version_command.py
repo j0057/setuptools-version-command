@@ -19,7 +19,7 @@ def validate_version_command_keyword(dist, attr, value):
     current_short_version, current_full_version = _get_scm_version(command, pep440_mode)
     cached_short_version, cached_full_version = _get_cached_version(version_txt, version_full_txt)
 
-    if not (current_full_version or cached_full_version):
+    if not (current_short_version or cached_short_version):
         raise Exception('Could not find version from {0!r} or from {1}'.format(command, version_full_txt))
 
     dist.metadata.version = current_short_version or cached_short_version
