@@ -15,6 +15,15 @@ setup(
     version='1.3.5',
     description=description,
     long_description=long_description,
+    license='http://opensource.org/licenses/MIT',
+    classifiers=[
+        'Framework :: Setuptools Plugin',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7'
+        'Programming Language :: Python :: 2 :: Only'
+    ],
     py_modules=['setuptools_version_command'],
     entry_points={
         'distutils.setup_keywords': [
