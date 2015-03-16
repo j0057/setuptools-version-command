@@ -42,12 +42,27 @@ as just the command to execute, for example ``git describe``. If it's a tuple, i
 have two elements, the first must be the command, and the second specifies how to
 adapt the version string to PEP440 and must one have one of the following values:
 
-``None``
+``None`` takes output of command as is:
+
     Do nothing, ignore PEP440 and accept that pip/setuptools will throw warnings
-``pep440-git-local``
-    Change ``"1.2.3-10-abc1234"``  to ``"1.2.3+git-10-abc1234"``
-``pep440-git-dev`` or ``pep440-git``
-    Change ``"1.2.3-10-abc1234"`` to ``"1.2.3.dev10"``
+
+``pep440-git-local`` moves number of commits and hash as local identifier:
+
+    * Change ``1.2.3`` to ``1.2.3``
+    * Change ``1.2.3-10-abc1234`` to ``1.2.3+git-10-abc1234``
+
+``pep440-git-dev`` or ``pep440-git`` moves number of commits into development release identifier and omits hash:
+
+    * Change ``1.2.3.dev`` to ``1.2.3.dev0``
+    * Change ``1.2.3.dev-N-abc1234`` to ``1.2.3.devN``
+    * Change ``1.2.3`` to ``1.2.3``
+
+    In other works, it excepts you to create a separate ``.dev``-ending tag after each release, until you create a
+    release tag again. If you are not on tag, and don't have ``.dev``-ending tag, following will happen:
+
+    * Change ``1.2.3-N-abc1234`` to ``1.2.3.devN``
+
+    This is against PEP440-specification and supported only for backwards-compatibility. It may be removed in time.
 
 installation
 ------------
@@ -74,4 +89,4 @@ Within a checkout of this repo:
     env/bin/pip install --editable .
     env/bin/python setup.py --version
 
-Make sure that you change the setup.py so that it actually makes use of setuptools-version-command.
+Make sure that you change the ``setup.py`` so that it actually makes use of setuptools-version-command.

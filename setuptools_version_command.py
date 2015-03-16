@@ -78,18 +78,25 @@ def _read_version(filename):
         return None
 
 def _apply_pep440(version, mode):
+
     if mode in ['pep440-git-local']:
         return version.replace('-', '+git-', 1).replace('-', '.')
 
     elif mode in ['pep440-git', 'pep440-git-dev']:
-        if '-' in version:
+        if version.endswith('.dev'):
+            return version + '0'  # on tag
+        elif '.dev-' in version:
+            parts = version.split('-')
+            return parts[0] + parts[1]
+        elif '-' in version:
+            # XXX: This in not compliant with PEP440. It is supported here for backwards-compatibility
             parts = version.split('-')
             parts[-2] = 'dev' + parts[-2]
             return '.'.join(parts[:-1])
         else:
             return version
 
-    elif mode == None:
+    elif mode is None:
         return version
 
     else:
