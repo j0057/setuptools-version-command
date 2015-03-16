@@ -56,9 +56,13 @@ adapt the version string to PEP440 and must one have one of the following values
     * Change ``1.2.3.dev`` to ``1.2.3.dev0``
     * Change ``1.2.3.dev-N-abc1234`` to ``1.2.3.devN``
     * Change ``1.2.3`` to ``1.2.3``
-    * Change ``1.2.3-0-abc1234`` to ``1.2.3``
 
-    Same works for pre-releases.
+    In other works, it excepts you to create a separate ``.dev``-ending tag after each release, until you create a
+    release tag again. If you are not on tag, and don't have ``.dev``-ending tag, following will happen:
+
+    * Change ``1.2.3-N-abc1234`` to ``1.2.3.devN``
+
+    This is against PEP440-specification and supported only for backwards-compatibility. It may be removed in time.
 
 installation
 ------------
