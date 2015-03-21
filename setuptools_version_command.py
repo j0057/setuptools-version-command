@@ -6,7 +6,7 @@ import re
 import subprocess
 
 # see pep440-version-regex.png
-_PEP440_VERSION = re.compile(r'^(?P<v>v)?(?:(?P<e>\d+)(?P<e_s>!))?(?P<r>\d+(?:\.\d+)*)(?:(?P<pre_ps>[\._-])?(?P<pre_t>a|alpha|b|beta|rc|c|pre|preview)(?P<pre_is>[\._-](?=\d))?(?P<pre_n>\d*))?(?:(?:(?P<post_ps>[\._-])?(?P<post_t>post|rev|r)(?P<post_is>[\._-](?=\d))?|(?P<post_im>-))(?P<post_n>(?(post_t)\d*|\d+)))?(?:(?P<dev_ps>[\._-])?(?P<dev_t>dev)(?P<dev_is>[\._-](?=\d))?(?P<dev_n>\d*))?(?:-(?P<git_rev>\d+)-(?P<git_commit>g?[0-9a-f]{4,20}))?$', re.IGNORECASE|re.VERBOSE)
+_PEP440_VERSION = re.compile(r'^(?P<v>v)?(?:(?P<e>\d+)(?P<e_s>!))?(?P<r>\d+(?:\.\d+)*)(?:(?P<pre_ps>[\._-])?(?P<pre_t>a|alpha|b|beta|rc|c|pre|preview)(?P<pre_is>[\._-](?=\d))?(?P<pre_n>\d*))?(?:(?:(?P<post_ps>[\._-])?(?P<post_t>post|rev|r)(?P<post_is>[\._-](?=\d))?|(?P<post_im>-))(?P<post_n>(?(post_t)\d*|\d+)))?(?:(?P<dev_ps>[\._-])?(?P<dev_t>dev)(?P<dev_is>[\._-](?=\d))?(?P<dev_n>\d*))?(?:-(?P<git_rev>\d+)-(?P<git_commit>g?[0-9a-f]{4,20}))?(?P<git_dirty>-dirty)?$', re.IGNORECASE|re.VERBOSE)
 _PEP440_POST_MODE = re.compile(r'^(?:(?P<post_ps>[\._-]?)(?P<post_t>post|rev|r)(?P<post_is>[\._-]?)|(?P<post_im>-))?$')
 
 def validate_version_command_keyword(dist, attr, value):
@@ -46,7 +46,7 @@ def _parse_value(value):
     if isinstance(value, tuple) and len(value) == 3:
         if value[1] is None:
             pass
-        elif value[1] in ['pep440-git', 'pep440-git-dev', 'pep440-git-local']:
+        elif value[1] in ['pep440-git', 'pep440-git-dev', 'pep440-git-local', 'pep440-git-full']:
             pass
         else:
             raise Exception('Unrecognized PEP440 mode {0!r}'.format(value[1]))
@@ -110,7 +110,7 @@ def _apply_pep440(version, pep440_mode, pep440_post={'post_ps':'.', 'post_t': 'p
         else:
             return version
 
-    elif pep440_mode in ['pep440-git']:
+    elif pep440_mode in ['pep440-git', 'pep440-git-full']:
         vd = _split_version(version)
         revs = vd['git_rev'] or '0'
 
@@ -139,7 +139,30 @@ def _apply_pep440(version, pep440_mode, pep440_post={'post_ps':'.', 'post_t': 'p
         if (vd['post_t'] or vd['post_im']) and not vd['post_n']: vd['post_n'] = '0'
         if vd['dev_t'] and not vd['dev_n']: vd['dev_n'] = '0'
 
-        return _join_version(vd)
+        ver = _join_version(vd)
+
+        # If we have git SHA-1 and/or an optional dirty flag and are operating
+        # in the pep440-git-full mode, include them in the local part of the
+        # version number
+        if pep440_mode == 'pep440-git-full':
+            commit_hash = ''
+            dirty = ''
+            if vd['git_commit']:
+                commit_hash = vd['git_commit']
+                if not commit_hash.startswith('g'):
+                    # Force consistent output in this mode.
+                    # This helps with bare dirty local versions being
+                    # ordered before ones that contain the git commit hash.
+                    commit_hash = 'g' + commit_hash
+            if vd['git_dirty']:
+                dirty = 'dirty'
+
+            if commit_hash and dirty:
+                ver = '{0}+{1}.{2}'.format(ver, commit_hash, dirty)
+            elif commit_hash or dirty:  # only one is valid
+                ver = '{0}+{1}{2}'.format(ver, commit_hash, dirty)
+
+        return ver
 
     elif pep440_mode is None:
         return version
