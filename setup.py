@@ -2,8 +2,6 @@
 
 from setuptools import setup
 
-description = '''Adds a command to dynamically get the version from the VCS of choice'''
-
 with open('README.rst', 'r') as f:
     long_description = f.read()
 
@@ -12,8 +10,8 @@ setup(
     author='Joost Molenaar',
     author_email='j.j.molenaar@gmail.com',
     url='https://github.com/j0057/setuptools-version-command',
-    version='1.3.5',
-    description=description,
+    version='2.0a0',
+    description= 'Adds a command to dynamically get the version from the VCS of choice',
     long_description=long_description,
     license='http://opensource.org/licenses/MIT',
     classifiers=[
@@ -21,8 +19,8 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2 :: Only',
         'Programming Language :: Python :: 2.7'
-        'Programming Language :: Python :: 2 :: Only'
     ],
     py_modules=['setuptools_version_command'],
     entry_points={
