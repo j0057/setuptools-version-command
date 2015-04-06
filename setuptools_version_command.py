@@ -38,7 +38,7 @@ def _parse_value(value):
 
     elif isinstance(value, tuple) and len(value) == 2:
 
-        if value[0] not in ['git describe']:
+        if value[0] not in ['git describe', 'git describe --long']:
             raise Exception('Unsupported SCM command {0!r}'.format(value))
 
         if value[1] is None:
