@@ -10,7 +10,7 @@ setup(
     author='Joost Molenaar',
     author_email='j.j.molenaar@gmail.com',
     url='https://github.com/j0057/setuptools-version-command',
-    version='2.0a0',
+    version='2.0a1',
     description= 'Adds a command to dynamically get the version from the VCS of choice',
     long_description=long_description,
     license='http://opensource.org/licenses/MIT',
