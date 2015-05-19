@@ -115,11 +115,8 @@ def _apply_pep440(version, pep440_mode, pep440_post={'post_ps':'.', 'post_t': 'p
         vd = _split_version(version)
         revs = vd['git_rev'] or '0'
 
-        # on git tag, so don't do anything
-        if revs == 'x':
-            pass
         # has dev tag, update number if it's implicitly 0
-        elif vd['dev_t']:
+        if vd['dev_t']:
             if vd['dev_n'] == '':
                 vd['dev_n'] = revs
             elif revs != '0':
