@@ -42,7 +42,7 @@ setuptools.setup(**{
     'author': 'Joost Molenaar',
     'author_email': 'j.j.molenaar@gmail.com',
 
-    'version': '2.0',
+    'version': '2.1a0',
 
     'classifiers': [
         'Framework :: Setuptools Plugin',
