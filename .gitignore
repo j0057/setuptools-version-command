@@ -1,8 +1,7 @@
 *.pyc
 *.egg-info
-MANIFEST
-dist
-env
+env*
 .idea/
 htmlcov
 .coverage
+.cache
