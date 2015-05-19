@@ -8,11 +8,6 @@ implicit = { 'post_ps': '', 'post_t': '', 'post_is': '', 'post_im': '-' }
 def test_str():
     assert _parse_value('git describe') == ('git describe', None, default)
 
-def test_wrong_command():
-    with pytest.raises(Exception) as e:
-        _parse_value('rm -rf /')
-    assert e.value.message == 'Unsupported SCM command \'rm -rf /\''
-
 def test_tuple_2():
     assert _parse_value(('git describe', 'pep440-git')) == ('git describe', 'pep440-git', default)
 

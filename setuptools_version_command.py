@@ -42,9 +42,6 @@ def _parse_value(value):
         value = value + ('.post',)
 
     if isinstance(value, tuple) and len(value) == 3:
-        if value[0] not in ['git describe', 'git describe --long']:
-            raise Exception('Unsupported SCM command {0!r}'.format(value[0]))
-
         if value[1] is None:
             pass
         elif value[1] in ['pep440-git', 'pep440-git-dev', 'pep440-git-local']:
