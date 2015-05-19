@@ -1,5 +1,9 @@
 import subprocess
-import __builtin__
+
+try:
+    import __builtin__
+except ImportError:
+    import builtins as __builtin__
 
 import pytest
 
@@ -78,7 +82,7 @@ def test_keyword_not_git_repo(git_describe, fake_file):
     with pytest.raises(Exception) as e:
         validate_version_command_keyword(dist, 'version_command', ('git describe', 'pep440-git', '-'))
 
-    assert e.value.message.startswith('Could not find version')
+    assert e.value.args[0].startswith('Could not find version')
 
 def test_keyword_closed_tag(git_describe, fake_file):
     git_describe.result = '1.2.dev5-3-abcd123\n'
@@ -87,7 +91,7 @@ def test_keyword_closed_tag(git_describe, fake_file):
     with pytest.raises(Exception) as e:
         validate_version_command_keyword(dist, 'version_command', ('git describe', 'pep440-git', '-'))
 
-    assert e.value.message == 'Could not transform version \'1.2.dev5-3-abcd123\''
+    assert e.value.args[0] == 'Could not transform version \'1.2.dev5-3-abcd123\''
 
 def test_metadata_writer():
     command = fake_obj({ 

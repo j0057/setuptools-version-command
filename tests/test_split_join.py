@@ -11,4 +11,4 @@ def test_regex_roundtrip():
 def test_regex_error():
     with pytest.raises(Exception) as e:
         _split_version('1.2.foo3')
-    assert e.value.message == 'Can\'t parse version \'1.2.foo3\' as PEP440 version'
+    assert e.value.args[0] == 'Can\'t parse version \'1.2.foo3\' as PEP440 version'

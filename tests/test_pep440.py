@@ -176,7 +176,7 @@ apply_pep440_implicit_post = lambda v: _apply_pep440(v, 'pep440-git', pep440_pos
 def test_wrong_mode():
     with pytest.raises(Exception) as e:
         _apply_pep440('1.0', 'albatross')
-    assert e.value.message == "Unrecognized PEP440 mode 'albatross'"
+    assert e.value.args[0] == "Unrecognized PEP440 mode 'albatross'"
 
 @pytest.mark.parametrize(('describe', 'expected'), pep440_git_local_cases)
 def test_pep440_git_local(describe, expected):
