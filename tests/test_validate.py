@@ -1,4 +1,7 @@
+from __future__ import unicode_literals
+
 import subprocess
+import sys
 
 try:
     import __builtin__
@@ -46,7 +49,7 @@ def fake_file(monkeypatch):
     return open_
  
 def test_get_scm_version(git_describe):
-    git_describe.result = '1.2-0-abcd123\n'
+    git_describe.result = b'1.2-0-abcd123\n'
     result = _get_scm_version('git describe', 'pep440-git', {})
     assert result == ('1.2', '1.2-0-abcd123')
 
@@ -56,7 +59,7 @@ def test_read_version(fake_file):
     assert result == 'hi'
 
 def test_keyword(git_describe, fake_file):
-    git_describe.result = '1.2-0-abcd123\n'
+    git_describe.result = b'1.2-0-abcd123\n'
     dist = fake_obj({ 'metadata': { 'name': 'spam' } })
 
     validate_version_command_keyword(dist, 'version_command', ('git describe', 'pep440-git', '-'))
@@ -85,13 +88,15 @@ def test_keyword_not_git_repo(git_describe, fake_file):
     assert e.value.args[0].startswith('Could not find version')
 
 def test_keyword_closed_tag(git_describe, fake_file):
-    git_describe.result = '1.2.dev5-3-abcd123\n'
+    git_describe.result = b'1.2.dev5-3-abcd123\n'
     dist = fake_obj({ 'metadata': { 'name': 'spam' } })
 
     with pytest.raises(Exception) as e:
         validate_version_command_keyword(dist, 'version_command', ('git describe', 'pep440-git', '-'))
 
-    assert e.value.args[0] == 'Could not transform version \'1.2.dev5-3-abcd123\''
+    assert e.value.args[0] == ('Could not transform version \'1.2.dev5-3-abcd123\''
+                               if sys.version_info[0] == 3 else
+                               'Could not transform version u\'1.2.dev5-3-abcd123\'')
 
 def test_metadata_writer():
     command = fake_obj({ 

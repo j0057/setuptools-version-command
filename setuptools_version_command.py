@@ -1,3 +1,5 @@
+from __future__ import print_function, unicode_literals
+
 import os
 import os.path
 import re
@@ -63,7 +65,7 @@ def _parse_value(value):
 def _get_scm_version(command, pep440_mode, pep440_post):
     try:
         cmd = command.split()
-        full_version = subprocess.check_output(cmd).strip()
+        full_version = subprocess.check_output(cmd).strip().decode('ascii')
     except:
         full_version = None
 
