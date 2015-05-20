@@ -42,15 +42,17 @@ setuptools.setup(**{
     'author': 'Joost Molenaar',
     'author_email': 'j.j.molenaar@gmail.com',
 
-    'version': '2.1a0',
+    'version': '2.1a1',
 
     'classifiers': [
         'Framework :: Setuptools Plugin',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2 :: Only',
-        'Programming Language :: Python :: 2.7'
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4'
     ],
 
     'py_modules': ['setuptools_version_command'],
