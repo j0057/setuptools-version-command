@@ -79,6 +79,22 @@ form ``(command, pep440_mode[, post_mode])``.
     last Git tag is an open pre-release tag, that will be used. In other cases,
     a post-release tag will be added. 
 
+:``pep440_mode`` = ``"pep440-git-full``: Similar to ``"pep440-git"`` but
+    includes the commit hash and dirty marker (if present) in the local version
+    portion.
+
+    * Change ``1.2.3.dev-N-abc1234`` to ``1.2.3.devN+gabc1234``
+    * Change ``1.2.3-dirty`` to ``1.2.3+dirty``
+    * Change ``1.2.3-10-abcd123-dirty`` to ``1.2.3.post10+gabcd123.dirty``
+
+    The inclusion of the hash in the local identifier helps avoid ambiguity
+    between two versions that are the same number of commits from the latest
+    tag.
+
+    The inclusion of the dirty flag (which requires ``command`` value to
+    include the ``--dirty`` option) ensures that local uncommitted changes
+    are considered newer than the last set of committed changes.
+
 :``post_mode``: Template for adding post-release tags. Optional separator (dot,
     dash or underscore), followed by ``"post"``, ``"rev"`` or ``"r"``, followed
     by another optional separator. Can also be a single dash. Default is
