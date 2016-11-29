@@ -40,7 +40,12 @@ Instead of specifying the ``version`` keyword argument, specify the
 ``version_command`` keyword argument. It can either be a str or a tuple. If
 it's a str, it's interpreted as just the command to execute, for example ``git
 describe``. If it's a tuple, it must have two or three elements, and have the
-form ``(command, pep440_mode[, post_mode])``. 
+form ``(command, pep440_mode[, post_mode])``. ``pep440_mode`` can only be
+specified in the tuple of ``version_argument``, not as separate
+argument of ``setup``.
+
+A list of possible values for tuples passed to the ``version_command`` keyword
+argument:
 
 :``command``: Must be ``"git describe"``, but could also support other VCS in
     the future.
